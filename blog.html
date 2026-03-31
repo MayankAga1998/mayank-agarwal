@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Mayank Agarwal</title>
+  <meta name="description" content="Thoughts on B2B Sales, Enterprise SaaS, and Business Development by Mayank Agarwal">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Barlow+Condensed:wght@500;600;700;900&display=swap" rel="stylesheet">
+  <!-- Marked.js for Markdown rendering -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+  <style>
+    /* ══════════ THEME ══════════ */
+    :root {
+      --bg:       #060c07;
+      --bg2:      #0b1510;
+      --surface:  #101d12;
+      --card:     #142018;
+      --border:   #1d3322;
+      --text:     #deeee2;
+      --text2:    #6b9874;
+      --accent:   #0fe87e;
+      --accent-d: #0ab963;
+      --accent-g: rgba(15,232,126,0.12);
+      --gold:     #f0b429;
+      --gold-g:   rgba(240,180,41,0.12);
+      --nav-bg:   rgba(6,12,7,0.88);
+      --shadow:   0 8px 40px rgba(0,0,0,0.55);
+      --glow:     0 0 28px rgba(15,232,126,0.18);
+    }
+    body.light {
+      --bg:       #f2faf4;
+      --bg2:      #e4f3e8;
+      --surface:  #ffffff;
+      --card:     #f8fdf9;
+      --border:   #bdd9c5;
+      --text:     #0a1c0d;
+      --text2:    #3a6645;
+      --accent:   #059c56;
+      --accent-d: #037a41;
+      --accent-g: rgba(5,156,86,0.10);
+      --gold:     #b86e00;
+      --gold-g:   rgba(184,110,0,0.10);
+      --nav-bg:   rgba(242,250,244,0.92);
+      --shadow:   0 8px 40px rgba(0,0,0,0.08);
+      --glow:     0 0 24px rgba(5,156,86,0.14);
+    }
+
+    /* ══════════ RESET ══════════ */
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'DM Sans',sans-serif;
+      background:var(--bg); color:var(--text);
+      overflow-x:hidden;
+      transition:background 0.35s, color 0.35s;
+      min-height:100vh;
+    }
+
+    /* ══════════ ANIMATIONS ══════════ */
+    @keyframes fadeUp  { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn  { from{opacity:0} to{opacity:1} }
+    @keyframes pulse   { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    @keyframes slideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes spin    { to{transform:rotate(360deg)} }
+
+    /* ══════════ NAV ══════════ */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:300;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 5%;
+      background:var(--nav-bg);
+      backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      transition:background 0.35s, border-color 0.35s;
+    }
+    .nav-logo {
+      font-family:'Cormorant Garamond',serif;
+      font-size:1.45rem; font-weight:600; color:var(--text); text-decoration:none;
+    }
+    .nav-logo span { color:var(--accent); }
+    .nav-links { display:flex; gap:26px; align-items:center; list-style:none; }
+    .nav-links a {
+      font-size:0.79rem; font-weight:500; letter-spacing:0.07em;
+      text-transform:uppercase; color:var(--text2); text-decoration:none;
+      transition:color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color:var(--accent); }
+    .nav-right { display:flex; align-items:center; gap:12px; }
+    .theme-pill {
+      display:flex; align-items:center; gap:6px;
+      background:var(--card); border:1.5px solid var(--border);
+      border-radius:50px; padding:5px 12px; cursor:pointer;
+      font-size:0.78rem; font-weight:600; color:var(--text2);
+      transition:background 0.35s, border-color 0.35s, color 0.2s;
+      white-space:nowrap; user-select:none; border:1.5px solid var(--border);
+    }
+    .theme-pill:hover { border-color:var(--accent); color:var(--accent); }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    .hamburger span { width:22px; height:2px; background:var(--text); border-radius:2px; display:block; }
+
+    /* ══════════ PAGE HEADER ══════════ */
+    .page-header {
+      padding: 140px 5% 72px;
+      position:relative; overflow:hidden;
+      background:var(--bg);
+    }
+    .header-orb {
+      position:absolute; border-radius:50%; pointer-events:none;
+      filter:blur(90px); opacity:0.8;
+    }
+    .header-orb-1 { width:400px; height:400px; background:radial-gradient(circle,rgba(15,232,126,0.12),transparent 70%); top:-100px; right:5%; }
+    .header-orb-2 { width:250px; height:250px; background:radial-gradient(circle,rgba(240,180,41,0.08),transparent 70%); bottom:0; left:10%; }
+
+    .header-inner { position:relative; z-index:1; max-width:760px; }
+    .header-label {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:0.7rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase;
+      color:var(--accent); margin-bottom:14px; display:flex; align-items:center; gap:11px;
+      animation:fadeUp 0.6s ease both;
+    }
+    .header-label::before { content:''; width:28px; height:2px; background:var(--accent); border-radius:2px; }
+    .page-header h1 {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(3rem,8vw,6rem); font-weight:700; line-height:0.95;
+      margin-bottom:20px;
+      animation:fadeUp 0.6s 0.08s ease both;
+    }
+    .page-header h1 em { font-style:italic; color:var(--accent); }
+    .page-header p {
+      font-size:1rem; color:var(--text2); line-height:1.75; max-width:520px;
+      animation:fadeUp 0.6s 0.16s ease both;
+    }
+
+    /* Write badge */
+    .write-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:var(--accent-g); border:1px solid rgba(15,232,126,0.25);
+      border-radius:50px; padding:8px 18px; margin-top:28px;
+      font-size:0.76rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+      color:var(--accent); text-decoration:none;
+      transition:background 0.2s, border-color 0.2s, transform 0.2s;
+      animation:fadeUp 0.6s 0.24s ease both;
+    }
+    .write-badge:hover { background:var(--accent); color:#040f06; transform:translateY(-2px); }
+    .write-badge svg { width:15px; height:15px; }
+
+    /* ══════════ MAIN LAYOUT ══════════ */
+    main {
+      max-width:1200px; margin:0 auto;
+      padding:0 5% 96px;
+    }
+
+    /* ══════════ FILTER TABS ══════════ */
+    .filter-bar {
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      margin-bottom:48px; padding-top:12px;
+      animation:fadeUp 0.5s 0.1s ease both;
+    }
+    .filter-label { font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--text2); margin-right:4px; }
+    .filter-btn {
+      padding:7px 16px; border-radius:50px; font-size:0.78rem; font-weight:600;
+      border:1.5px solid var(--border); background:transparent; color:var(--text2);
+      cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif;
+    }
+    .filter-btn:hover { border-color:var(--accent); color:var(--accent); }
+    .filter-btn.active { background:var(--accent); border-color:var(--accent); color:#040f06; }
+
+    /* ══════════ BLOG LIST VIEW ══════════ */
+    #blog-list { display:block; }
+    #post-view  { display:none; }
+
+    .posts-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(340px,1fr));
+      gap:22px;
+    }
+
+    /* Featured (first post) spans full width */
+    .post-card {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:20px; overflow:hidden;
+      transition:border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+      cursor:pointer; text-decoration:none; display:flex; flex-direction:column;
+      animation:slideUp 0.55s ease both;
+    }
+    .post-card:hover { border-color:var(--accent); box-shadow:var(--glow); transform:translateY(-4px); }
+    .post-card.featured { grid-column:1/-1; flex-direction:row; }
+
+    .post-card:nth-child(1){animation-delay:.04s}
+    .post-card:nth-child(2){animation-delay:.09s}
+    .post-card:nth-child(3){animation-delay:.14s}
+    .post-card:nth-child(4){animation-delay:.19s}
+    .post-card:nth-child(5){animation-delay:.24s}
+
+    .card-accent-bar { height:3px; background:linear-gradient(90deg,var(--accent),transparent); flex-shrink:0; }
+    .card-accent-bar.gold { background:linear-gradient(90deg,var(--gold),transparent); }
+
+    .card-body { padding:28px 30px; flex:1; display:flex; flex-direction:column; }
+    .post-card.featured .card-body { padding:40px 44px; }
+
+    .card-meta {
+      display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;
+    }
+    .meta-tag {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:0.7rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;
+      color:var(--accent); background:var(--accent-g);
+      padding:4px 12px; border-radius:50px;
+    }
+    .meta-tag.gold-tag { color:var(--gold); background:var(--gold-g); }
+    .meta-date { font-size:0.75rem; color:var(--text2); }
+    .meta-read { font-size:0.75rem; color:var(--text2); }
+    .meta-dot  { width:3px; height:3px; background:var(--border); border-radius:50%; }
+
+    .card-title {
+      font-family:'Cormorant Garamond',serif;
+      font-size:1.45rem; font-weight:700; line-height:1.25; color:var(--text);
+      margin-bottom:10px;
+    }
+    .post-card.featured .card-title { font-size:2rem; }
+
+    .card-excerpt {
+      font-size:0.87rem; color:var(--text2); line-height:1.7;
+      flex:1; margin-bottom:20px;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+    }
+    .post-card.featured .card-excerpt { -webkit-line-clamp:4; }
+
+    .card-footer {
+      display:flex; align-items:center; justify-content:space-between;
+      padding-top:16px; border-top:1px solid var(--border);
+    }
+    .card-author { display:flex; align-items:center; gap:10px; }
+    .author-av {
+      width:32px; height:32px; border-radius:50%;
+      background:var(--accent-g); border:1.5px solid rgba(15,232,126,0.25);
+      display:flex; align-items:center; justify-content:center;
+      font-size:0.75rem; font-weight:700; color:var(--accent);
+    }
+    .author-name { font-size:0.8rem; font-weight:600; color:var(--text); }
+    .read-link {
+      display:flex; align-items:center; gap:6px;
+      font-size:0.78rem; font-weight:600; color:var(--accent); letter-spacing:0.04em; text-transform:uppercase;
+    }
+    .read-link svg { width:14px; height:14px; transition:transform 0.2s; }
+    .post-card:hover .read-link svg { transform:translateX(3px); }
+
+    /* ══════════ EMPTY / LOADING / ERROR STATES ══════════ */
+    .state-box {
+      grid-column:1/-1; text-align:center; padding:80px 20px;
+      animation:fadeIn 0.5s ease both;
+    }
+    .state-icon { font-size:3.5rem; margin-bottom:16px; opacity:0.6; }
+    .state-title { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:700; margin-bottom:10px; }
+    .state-sub   { font-size:0.9rem; color:var(--text2); line-height:1.65; max-width:480px; margin:0 auto 24px; }
+    .spinner {
+      width:40px; height:40px; border:3px solid var(--border);
+      border-top-color:var(--accent); border-radius:50%;
+      animation:spin 0.8s linear infinite; margin:0 auto 16px;
+    }
+
+    /* ══════════ SINGLE POST VIEW ══════════ */
+    .post-nav {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:28px 0; margin-bottom:8px; flex-wrap:wrap; gap:12px;
+    }
+    .back-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:0.8rem; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:0.06em;
+      cursor:pointer; transition:color 0.2s; background:none; border:none; font-family:'DM Sans',sans-serif; padding:0;
+    }
+    .back-btn:hover { color:var(--accent); }
+    .back-btn svg { width:16px; height:16px; }
+    .post-share { display:flex; gap:10px; }
+    .share-btn {
+      display:flex; align-items:center; gap:6px;
+      padding:7px 14px; border-radius:50px; font-size:0.75rem; font-weight:600;
+      border:1.5px solid var(--border); background:transparent; color:var(--text2);
+      cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif;
+    }
+    .share-btn:hover { border-color:var(--accent); color:var(--accent); }
+    .share-btn svg { width:13px; height:13px; }
+
+    .post-header { margin-bottom:48px; }
+    .post-tags { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+    .post-tag {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:0.7rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;
+      color:var(--accent); background:var(--accent-g); padding:5px 13px; border-radius:50px;
+    }
+    .post-header h1 {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(2.2rem,6vw,4rem); font-weight:700; line-height:1.1;
+      margin-bottom:20px; animation:fadeUp 0.5s ease both;
+    }
+    .post-info {
+      display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+      padding:16px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+      animation:fadeUp 0.5s 0.08s ease both;
+    }
+    .post-info .author-av { width:38px; height:38px; font-size:0.85rem; }
+    .info-text .author-name { font-size:0.86rem; }
+    .info-text .post-date { font-size:0.76rem; color:var(--text2); }
+    .info-sep { width:1px; height:28px; background:var(--border); }
+    .info-pill {
+      font-size:0.75rem; color:var(--text2);
+      display:flex; align-items:center; gap:5px;
+    }
+    .info-pill svg { width:13px; height:13px; color:var(--accent); }
+
+    /* Markdown content styles */
+    .post-content {
+      max-width:720px; margin:0 auto;
+      animation:fadeUp 0.5s 0.15s ease both;
+    }
+    .post-content h1,.post-content h2,.post-content h3,.post-content h4 {
+      font-family:'Cormorant Garamond',serif; font-weight:700; color:var(--text);
+      margin:2em 0 0.6em; line-height:1.2;
+    }
+    .post-content h2 { font-size:1.85rem; padding-bottom:10px; border-bottom:1px solid var(--border); }
+    .post-content h3 { font-size:1.45rem; }
+    .post-content h4 { font-size:1.15rem; }
+    .post-content p  { font-size:1rem; color:var(--text2); line-height:1.82; margin-bottom:1.4em; }
+    .post-content strong { color:var(--text); font-weight:600; }
+    .post-content em { color:var(--text); font-style:italic; }
+    .post-content a  { color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
+    .post-content a:hover { color:var(--accent-d); }
+    .post-content ul,.post-content ol { padding-left:1.4em; margin-bottom:1.4em; }
+    .post-content li { font-size:1rem; color:var(--text2); line-height:1.75; margin-bottom:6px; }
+    .post-content li::marker { color:var(--accent); }
+    .post-content blockquote {
+      border-left:3px solid var(--accent); padding:16px 24px;
+      background:var(--accent-g); border-radius:0 12px 12px 0;
+      margin:1.6em 0; font-style:italic;
+    }
+    .post-content blockquote p { color:var(--text); margin-bottom:0; }
+    .post-content code {
+      font-family:'Courier New',monospace; font-size:0.85em;
+      background:var(--surface); border:1px solid var(--border);
+      padding:2px 7px; border-radius:6px; color:var(--accent);
+    }
+    .post-content pre {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:14px; padding:24px; overflow-x:auto; margin:1.6em 0;
+    }
+    .post-content pre code { background:none; border:none; padding:0; color:var(--text2); font-size:0.88rem; }
+    .post-content hr { border:none; border-top:1px solid var(--border); margin:2.5em 0; }
+    .post-content table { width:100%; border-collapse:collapse; margin:1.6em 0; font-size:0.9rem; }
+    .post-content th { background:var(--surface); color:var(--text); font-weight:600; padding:10px 14px; border:1px solid var(--border); text-align:left; }
+    .post-content td { padding:10px 14px; border:1px solid var(--border); color:var(--text2); }
+    .post-content tr:hover td { background:var(--accent-g); }
+    .post-content img { max-width:100%; border-radius:14px; margin:1.2em 0; border:1px solid var(--border); }
+
+    /* Post footer CTA */
+    .post-cta {
+      max-width:720px; margin:60px auto 0;
+      background:var(--card); border:1px solid var(--border);
+      border-radius:20px; padding:36px 40px;
+      display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+    }
+    .post-cta h3 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:700; margin-bottom:6px; }
+    .post-cta p  { font-size:0.85rem; color:var(--text2); }
+    .cta-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      background:var(--accent); color:#040f06;
+      padding:11px 24px; border-radius:50px; white-space:nowrap;
+      font-size:0.82rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;
+      text-decoration:none; transition:background 0.2s, transform 0.2s;
+    }
+    .cta-btn:hover { background:var(--accent-d); transform:translateY(-1px); }
+
+    /* ══════════ FOOTER ══════════ */
+    footer {
+      background:var(--bg2); border-top:1px solid var(--border);
+      padding:40px 5% 28px;
+    }
+    .footer-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+    .footer-logo { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:var(--text); text-decoration:none; }
+    .footer-logo span { color:var(--accent); }
+    .footer-links-row { display:flex; gap:20px; }
+    .footer-links-row a { font-size:0.78rem; color:var(--text2); text-decoration:none; transition:color 0.2s; }
+    .footer-links-row a:hover { color:var(--accent); }
+    .footer-copy { font-size:0.74rem; color:var(--text2); margin-top:16px; padding-top:16px; border-top:1px solid var(--border); }
+
+    /* ══════════ RESPONSIVE ══════════ */
+    @media(max-width:900px) {
+      .post-card.featured { flex-direction:column; }
+      .post-card.featured .card-body { padding:28px 30px; }
+      .post-card.featured .card-title { font-size:1.55rem; }
+      .nav-links { display:none; }
+      .nav-links.open { display:flex; flex-direction:column; position:absolute; top:100%; left:0; right:0; background:var(--nav-bg); padding:16px 5%; border-bottom:1px solid var(--border); backdrop-filter:blur(20px); gap:16px; z-index:200; }
+      .hamburger { display:flex; }
+      .post-cta { padding:24px 26px; }
+    }
+    @media(max-width:600px) {
+      .posts-grid { grid-template-columns:1fr; }
+      .post-header h1 { font-size:2rem; }
+      .page-header h1 { font-size:2.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a href="index.html" class="nav-logo">M<span>.</span>Agarwal</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#experience">Experience</a></li>
+    <li><a href="index.html#awards">Awards</a></li>
+    <li><a href="index.html#certifications">Certifications</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="index.html#resume">Resume</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-pill" id="themeBtn" aria-label="Toggle dark/light mode">
+      <span id="themeIcon">🌙</span>
+      <span id="themeLabel">Dark</span>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══ PAGE HEADER ══ -->
+<div class="page-header">
+  <div class="header-orb header-orb-1"></div>
+  <div class="header-orb header-orb-2"></div>
+  <div class="header-inner">
+    <div class="header-label">Thoughts &amp; Insights</div>
+    <h1>Sales <em>Intelligence</em></h1>
+    <p>Real-world perspectives on B2B sales, enterprise SaaS, pipeline building, and what it actually takes to close deals at the top.</p>
+    <a href="https://github.com/MayankAga1998/mayank-agarwal/issues/new?labels=blog&title=Post+Title+Here&body=Write+your+blog+post+here+using+markdown..." 
+       target="_blank" rel="noopener" class="write-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Write a New Post on GitHub
+    </a>
+  </div>
+</div>
+
+<!-- ══ MAIN CONTENT ══ -->
+<main>
+
+  <!-- Blog list view -->
+  <div id="blog-list">
+    <div class="filter-bar" id="filterBar" style="display:none;">
+      <span class="filter-label">Filter:</span>
+      <button class="filter-btn active" data-tag="all">All Posts</button>
+    </div>
+    <div class="posts-grid" id="postsGrid">
+      <!-- Posts injected by JS -->
+      <div class="state-box">
+        <div class="spinner"></div>
+        <div class="state-title">Loading posts…</div>
+        <div class="state-sub">Fetching the latest from GitHub</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Single post view -->
+  <div id="post-view">
+    <div class="post-nav">
+      <button class="back-btn" id="backBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Blog
+      </button>
+      <div class="post-share">
+        <button class="share-btn" id="copyLinkBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Copy Link
+        </button>
+        <a id="twitterShareBtn" href="#" target="_blank" rel="noopener" class="share-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Share
+        </a>
+        <a id="linkedinShareBtn" href="#" target="_blank" rel="noopener" class="share-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+
+    <div class="post-header">
+      <div class="post-tags" id="postTags"></div>
+      <h1 id="postTitle"></h1>
+      <div class="post-info">
+        <div class="author-av">MA</div>
+        <div class="info-text">
+          <div class="author-name">Mayank Agarwal</div>
+          <div class="post-date" id="postDate"></div>
+        </div>
+        <div class="info-sep"></div>
+        <div class="info-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="postReadTime"></span>
+        </div>
+        <div class="info-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span id="postViews">Public post</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-content" id="postContent"></div>
+
+    <div class="post-cta">
+      <div>
+        <h3>Let's connect</h3>
+        <p>If this resonated, I'd love to continue the conversation on LinkedIn or over email.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="https://linkedin.com/in/mayank-agarwal-b2bsales" target="_blank" rel="noopener" class="cta-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          Connect on LinkedIn
+        </a>
+        <a id="ctaEmail" href="#" class="cta-btn" style="background:var(--card);color:var(--text);border:1.5px solid var(--border);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+          Email Me
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-row">
+    <a href="index.html" class="footer-logo">M<span>.</span>Agarwal</a>
+    <div class="footer-links-row">
+      <a href="index.html">Portfolio</a>
+      <a href="blog.html">Blog</a>
+      <a href="https://linkedin.com/in/mayank-agarwal-b2bsales" target="_blank">LinkedIn</a>
+      <a href="index.html#resume">Resume</a>
+    </div>
+  </div>
+  <div class="footer-copy">© 2025 Mayank Agarwal · All rights reserved · Built with purpose 🚀</div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════
+   CONFIG — Update these when you set up your repo
+══════════════════════════════════════════════ */
+var GITHUB_USER = 'MayankAga1998';
+var GITHUB_REPO = 'mayank-agarwal';   // your repo name — change if different
+var BLOG_LABEL  = 'blog';             // label you put on each Issue to publish it
+
+/* ══════════════════════════════════════════════
+   THEME TOGGLE
+══════════════════════════════════════════════ */
+var isLight = false;
+function setTheme(light) {
+  isLight = !!light;
+  document.body.classList.toggle('light', isLight);
+  document.getElementById('themeIcon').textContent  = isLight ? '☀️' : '🌙';
+  document.getElementById('themeLabel').textContent = isLight ? 'Light' : 'Dark';
+  try { localStorage.setItem('ma_theme', isLight ? '1' : '0'); } catch(e){}
+}
+try { if (localStorage.getItem('ma_theme') === '1') setTheme(true); } catch(e){}
+document.getElementById('themeBtn').addEventListener('click', function(){ setTheme(!isLight); });
+
+/* ══════════════════════════════════════════════
+   MOBILE NAV
+══════════════════════════════════════════════ */
+document.getElementById('hamburger').addEventListener('click', function(){
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+/* ══════════════════════════════════════════════
+   EMAIL LINK (anti-scrape)
+══════════════════════════════════════════════ */
+var addr = ['amayank32','gmail.com'].join('\u0040');
+var ctaEmail = document.getElementById('ctaEmail');
+if(ctaEmail) ctaEmail.href = 'mailto:' + addr;
+
+/* ══════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════ */
+function formatDate(iso) {
+  return new Date(iso).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+}
+function readTime(body) {
+  var words = (body || '').trim().split(/\s+/).length;
+  return Math.max(1, Math.round(words / 200)) + ' min read';
+}
+function extractExcerpt(body) {
+  // Strip markdown syntax for clean excerpt
+  return (body || '')
+    .replace(/#{1,6}\s+/g,'')
+    .replace(/\*\*(.+?)\*\*/g,'$1')
+    .replace(/\*(.+?)\*/g,'$1')
+    .replace(/\[(.+?)\]\(.+?\)/g,'$1')
+    .replace(/`(.+?)`/g,'$1')
+    .replace(/\n+/g,' ')
+    .trim()
+    .slice(0, 200) + '…';
+}
+function extractTags(labels) {
+  // Filter out the 'blog' label, keep the rest as topic tags
+  return (labels || [])
+    .map(function(l){ return l.name; })
+    .filter(function(n){ return n !== BLOG_LABEL; });
+}
+
+/* ══════════════════════════════════════════════
+   RENDER POSTS LIST
+══════════════════════════════════════════════ */
+var allPosts = [];
+var activeTag = 'all';
+
+function renderList(posts) {
+  var grid = document.getElementById('postsGrid');
+  if (!posts || posts.length === 0) {
+    grid.innerHTML = [
+      '<div class="state-box">',
+      '  <div class="state-icon">✍️</div>',
+      '  <div class="state-title">No posts yet</div>',
+      '  <div class="state-sub">Publish your first post by creating a GitHub Issue labelled <strong>blog</strong> in your repo.</div>',
+      '  <a href="https://github.com/'+GITHUB_USER+'/'+GITHUB_REPO+'/issues/new?labels=blog&title=Post+Title&body=Write+post+here" ',
+      '     target="_blank" rel="noopener" class="cta-btn" style="margin:0 auto;display:inline-flex;">',
+      '    Write First Post</a>',
+      '</div>'
+    ].join('');
+    return;
+  }
+
+  // Build tag filter list
+  var tagSet = {};
+  posts.forEach(function(p){ extractTags(p.labels).forEach(function(t){ tagSet[t]=1; }); });
+  var tags = Object.keys(tagSet);
+  if(tags.length > 0) {
+    var fb = document.getElementById('filterBar');
+    fb.style.display = 'flex';
+    tags.forEach(function(t) {
+      var btn = document.createElement('button');
+      btn.className = 'filter-btn' + (t === activeTag ? ' active' : '');
+      btn.setAttribute('data-tag', t);
+      btn.textContent = t.charAt(0).toUpperCase() + t.slice(1);
+      btn.addEventListener('click', function(){ filterBy(t); });
+      fb.appendChild(btn);
+    });
+  }
+
+  var html = posts.map(function(post, i) {
+    var tags      = extractTags(post.labels);
+    var isFirst   = i === 0;
+    var excerpt   = extractExcerpt(post.body);
+    var tagHtml   = tags.map(function(t,ti){
+      return '<span class="meta-tag'+(ti===0&&isFirst?' gold-tag':'')+'">'+t+'</span>';
+    }).join('');
+    if(!tagHtml) tagHtml = '<span class="meta-tag">Sales</span>';
+
+    return [
+      '<div class="post-card'+(isFirst?' featured':'')+'" data-id="'+post.number+'" data-tags="'+tags.join(',')+'">',
+      '  <div class="card-accent-bar'+(isFirst?' gold':'')+'"></div>',
+      '  <div class="card-body">',
+      '    <div class="card-meta">',
+      '      '+tagHtml,
+      '      <span class="meta-dot"></span>',
+      '      <span class="meta-date">'+formatDate(post.created_at)+'</span>',
+      '      <span class="meta-dot"></span>',
+      '      <span class="meta-read">'+readTime(post.body)+'</span>',
+      '    </div>',
+      '    <div class="card-title">'+escHtml(post.title)+'</div>',
+      '    <div class="card-excerpt">'+escHtml(excerpt)+'</div>',
+      '    <div class="card-footer">',
+      '      <div class="card-author">',
+      '        <div class="author-av">MA</div>',
+      '        <span class="author-name">Mayank Agarwal</span>',
+      '      </div>',
+      '      <span class="read-link">Read <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>',
+      '    </div>',
+      '  </div>',
+      '</div>'
+    ].join('');
+  }).join('');
+
+  grid.innerHTML = html;
+
+  // Click handler on cards
+  grid.querySelectorAll('.post-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      var id = parseInt(card.getAttribute('data-id'));
+      var post = allPosts.find(function(p){ return p.number === id; });
+      if(post) openPost(post);
+    });
+  });
+}
+
+function filterBy(tag) {
+  activeTag = tag;
+  document.querySelectorAll('.filter-btn').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-tag') === tag);
+  });
+  var filtered = tag === 'all'
+    ? allPosts
+    : allPosts.filter(function(p){
+        return extractTags(p.labels).indexOf(tag) > -1;
+      });
+  renderList(filtered);
+}
+
+document.querySelector('[data-tag="all"]').addEventListener('click', function(){ filterBy('all'); });
+
+function escHtml(str) {
+  return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ══════════════════════════════════════════════
+   OPEN SINGLE POST
+══════════════════════════════════════════════ */
+function openPost(post) {
+  var tags    = extractTags(post.labels);
+  var tagHtml = tags.map(function(t){ return '<span class="post-tag">'+escHtml(t)+'</span>'; }).join('');
+  if(!tagHtml) tagHtml = '<span class="post-tag">Sales</span>';
+
+  document.getElementById('postTags').innerHTML    = tagHtml;
+  document.getElementById('postTitle').textContent = post.title;
+  document.getElementById('postDate').textContent  = formatDate(post.created_at);
+  document.getElementById('postReadTime').textContent = readTime(post.body);
+
+  // Render markdown
+  var md = post.body || '_No content._';
+  if(typeof marked !== 'undefined') {
+    marked.setOptions({ breaks:true, gfm:true });
+    document.getElementById('postContent').innerHTML = marked.parse(md);
+  } else {
+    // Fallback plain text
+    document.getElementById('postContent').textContent = md;
+  }
+
+  // Share links
+  var pageUrl  = window.location.href.split('?')[0] + '?post=' + post.number;
+  var tweetTxt = encodeURIComponent(post.title + ' by @MayankAgarwal — ');
+  document.getElementById('twitterShareBtn').href  = 'https://twitter.com/intent/tweet?text='+tweetTxt+'&url='+encodeURIComponent(pageUrl);
+  document.getElementById('linkedinShareBtn').href = 'https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(pageUrl);
+
+  document.getElementById('copyLinkBtn').addEventListener('click', function(){
+    navigator.clipboard.writeText(pageUrl).then(function(){
+      document.getElementById('copyLinkBtn').textContent = '✓ Copied!';
+      setTimeout(function(){ document.getElementById('copyLinkBtn').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> Copy Link'; }, 2000);
+    });
+  });
+
+  // Switch views
+  document.getElementById('blog-list').style.display = 'none';
+  document.getElementById('post-view').style.display  = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  // Update URL without reload
+  try { history.pushState({post:post.number},'',pageUrl); } catch(e){}
+}
+
+/* ══════════════════════════════════════════════
+   BACK TO LIST
+══════════════════════════════════════════════ */
+document.getElementById('backBtn').addEventListener('click', function(){
+  document.getElementById('post-view').style.display  = 'none';
+  document.getElementById('blog-list').style.display = 'block';
+  try { history.pushState({},'',window.location.pathname); } catch(e){}
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+window.addEventListener('popstate', function(e){
+  if(!e.state || !e.state.post) {
+    document.getElementById('post-view').style.display  = 'none';
+    document.getElementById('blog-list').style.display = 'block';
+  }
+});
+
+/* ══════════════════════════════════════════════
+   FETCH POSTS FROM GITHUB ISSUES API
+══════════════════════════════════════════════ */
+function fetchPosts() {
+  var url = 'https://api.github.com/repos/'
+    + GITHUB_USER + '/' + GITHUB_REPO
+    + '/issues?labels=' + encodeURIComponent(BLOG_LABEL)
+    + '&state=open&per_page=50&sort=created&direction=desc';
+
+  fetch(url, {
+    headers: { 'Accept': 'application/vnd.github.v3+json' }
+  })
+  .then(function(res) {
+    if(!res.ok) throw new Error('GitHub API error: ' + res.status);
+    return res.json();
+  })
+  .then(function(issues) {
+    allPosts = issues;
+    renderList(issues);
+
+    // Check for ?post= query param to deep-link directly to a post
+    var params = new URLSearchParams(window.location.search);
+    var postId = params.get('post');
+    if(postId) {
+      var found = issues.find(function(p){ return p.number === parseInt(postId); });
+      if(found) openPost(found);
+    }
+  })
+  .catch(function(err) {
+    document.getElementById('postsGrid').innerHTML = [
+      '<div class="state-box">',
+      '  <div class="state-icon">⚠️</div>',
+      '  <div class="state-title">Couldn\'t load posts</div>',
+      '  <div class="state-sub">Make sure the GitHub repo is <strong>public</strong> and the repo name in the config matches. Error: '+escHtml(err.message)+'</div>',
+      '  <a href="https://github.com/'+GITHUB_USER+'/'+GITHUB_REPO+'" target="_blank" rel="noopener" class="cta-btn" style="margin:0 auto;display:inline-flex;">',
+      '    Open GitHub Repo</a>',
+      '</div>'
+    ].join('');
+  });
+}
+
+fetchPosts();
+</script>
+</body>
+</html>
